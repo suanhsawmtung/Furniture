@@ -1,3 +1,6 @@
+import type { materialSchema } from "@/validations/common.validation";
+import type z from "zod";
+
 export type MaterialType = {
   id: number;
   name: string;
@@ -55,3 +58,5 @@ export interface DeleteMaterialResponse {
   success: boolean;
   message: string;
 }
+
+export type MaterialFormValues = z.infer<typeof materialSchema>;

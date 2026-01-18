@@ -15,7 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { TabButton } from "@/components/ui/tab-button";
+import { POST_STATUSES } from "@/constants/post.constant";
+import { isPostStatus } from "@/lib/utils";
 import { useGetAllCategories } from "@/services/category/queries/useGetAllCategories";
+import { useAuthStore } from "@/stores/auth.store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -25,6 +29,7 @@ import z from "zod";
 const PostFilterFormSchema = z.object({
   search: z.string().optional(),
   category: z.string().optional(),
+  status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional(),
 });
 
 type PostFilterFormValues = z.infer<typeof PostFilterFormSchema>;
@@ -36,11 +41,17 @@ export function PostFilterForm({ close }: { close: () => void }) {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const authUser = useAuthStore((state) => state.authUser);
+
+  const statuses =
+    authUser?.role === "ADMIN" ? POST_STATUSES : POST_STATUSES.slice(0, 2);
+
   const form = useForm<PostFilterFormValues>({
     resolver: zodResolver(PostFilterFormSchema),
     defaultValues: {
       search: "",
       category: "",
+      status: undefined,
     },
   });
 
@@ -49,10 +60,13 @@ export function PostFilterForm({ close }: { close: () => void }) {
     const searchParams = new URLSearchParams(location.search);
     const search = searchParams.get("search") || "";
     const category = searchParams.get("category") || "";
+    const statusParam = searchParams.get("status");
+    const status = isPostStatus(statusParam) ? statusParam : undefined;
 
     form.reset({
       search,
       category,
+      status,
     });
   }, [location.search, form]);
 
@@ -76,6 +90,13 @@ export function PostFilterForm({ close }: { close: () => void }) {
       searchParams.delete("category");
     }
 
+    // Update status param
+    if (data.status) {
+      searchParams.set("status", data.status);
+    } else {
+      searchParams.delete("status");
+    }
+
     const queryString = searchParams.toString();
     navigate(`${location.pathname}${queryString ? `?${queryString}` : ""}`, {
       replace: true,
@@ -88,6 +109,7 @@ export function PostFilterForm({ close }: { close: () => void }) {
     form.reset({
       search: "",
       category: "",
+      status: undefined,
     });
     navigate(location.pathname, { replace: true });
     close();
@@ -152,6 +174,37 @@ export function PostFilterForm({ close }: { close: () => void }) {
               </FormItem>
             );
           }}
+        />
+
+        {/* Status Filter */}
+
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Status</FormLabel>
+              <FormControl>
+                <div className="flex flex-wrap gap-2">
+                  {statuses?.map((stat) => (
+                    <TabButton
+                      key={stat.key}
+                      text={stat.text}
+                      isSelected={field.value === stat.key}
+                      onClick={() => {
+                        // Toggle: if already selected, deselect it
+                        if (field.value === stat.key) {
+                          field.onChange(undefined);
+                        } else {
+                          field.onChange(stat.key);
+                        }
+                      }}
+                    />
+                  ))}
+                </div>
+              </FormControl>
+            </FormItem>
+          )}
         />
 
         {/* Action Buttons */}

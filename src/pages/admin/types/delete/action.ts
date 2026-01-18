@@ -16,9 +16,6 @@ export async function action({ params }: ActionFunctionArgs) {
   try {
     const response = await deleteType({ slug });
 
-    // Show success toast
-    toast.success(response.message || "Type deleted successfully");
-
     queryClient.removeQueries({
       queryKey: typeQueryKeys.detail(slug),
     });
@@ -26,6 +23,9 @@ export async function action({ params }: ActionFunctionArgs) {
     await queryClient.invalidateQueries({
       queryKey: typeQueryKeys.lists,
     });
+
+    // Show success toast
+    toast.success(response.message || "Type deleted successfully");
 
     // Redirect to types list page
     return redirect("/admin/types");
@@ -38,4 +38,3 @@ export async function action({ params }: ActionFunctionArgs) {
     throw error;
   }
 }
-

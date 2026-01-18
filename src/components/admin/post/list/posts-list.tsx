@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAuthStore } from "@/stores/auth.store";
 import type { PostType } from "@/types/post.type";
 import { FilterTags } from "../../shared/filter-tags";
 import { columns } from "./table/columns";
@@ -24,6 +25,8 @@ export function PostList({
   const currentPage = page || 1;
   const totalPages = total || 1;
 
+  const authUser = useAuthStore((state) => state.authUser);
+
   return (
     <Card>
       <CardHeader className="flex flex-col items-start justify-start gap-2 px-4 md:flex-row md:justify-between md:px-6">
@@ -32,7 +35,16 @@ export function PostList({
         </CardTitle>
 
         <div className="w-full md:w-3/4">
-          <FilterTags allowedFilters={{ search: true, category: true }} />
+          <FilterTags
+            allowedFilters={{
+              search: true,
+              category: true,
+              status:
+                authUser?.role === "ADMIN"
+                  ? ["DRAFT", "PUBLISHED", "ARCHIVED"]
+                  : ["DRAFT", "PUBLISHED"],
+            }}
+          />
         </div>
       </CardHeader>
 

@@ -1,3 +1,6 @@
+import type { typeSchema } from "@/validations/common.validation";
+import type z from "zod";
+
 export type ProductTypeType = {
   id: number;
   name: string;
@@ -56,3 +59,4 @@ export interface DeleteTypeResponse {
   message: string;
 }
 
+export type TypeFormValues = z.infer<typeof typeSchema>;

@@ -28,7 +28,7 @@ const AuthDropdown = ({ user }: Props) => {
   const location = useLocation();
   const isLoggingOut = navigation.state === "submitting";
   const isAdminRoute = location.pathname.startsWith("/admin");
-  const isAdmin = user?.role === "ADMIN";
+  const isAdmin = user?.role === "ADMIN" || user?.role === "AUTHOR";
 
   if (!user) {
     return (

@@ -1,14 +1,14 @@
 import api from "@/lib/api";
 import type {
-    CreateMaterialParams,
-    CreateMaterialResponse,
-    DeleteMaterialParams,
-    DeleteMaterialResponse,
-    MaterialListResult,
-    MaterialQueryParams,
-    MaterialType,
-    UpdateMaterialParams,
-    UpdateMaterialResponse,
+  CreateMaterialParams,
+  CreateMaterialResponse,
+  DeleteMaterialParams,
+  DeleteMaterialResponse,
+  MaterialListResult,
+  MaterialQueryParams,
+  MaterialType,
+  UpdateMaterialParams,
+  UpdateMaterialResponse,
 } from "@/types/material.type";
 
 export const DEFAULT_LIMIT = 10;
@@ -76,4 +76,3 @@ export async function deleteMaterial(
   // Backend returns: { success: true, message: string }
   return response.data;
 }
-

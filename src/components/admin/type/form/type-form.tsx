@@ -9,21 +9,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { ProductTypeType } from "@/types";
+import type { TypeFormValues } from "@/types/type.type";
+import { typeSchema } from "@/validations/common.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useNavigation, useSubmit } from "react-router";
-import z from "zod";
-
-const typeSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Type name is required")
-    .max(52, "Type name must be 52 characters or less"),
-});
-
-type TypeFormValues = z.infer<typeof typeSchema>;
 
 interface TypeFormProps {
   type?: ProductTypeType;

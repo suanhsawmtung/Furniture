@@ -1,3 +1,4 @@
+import type { PostStatus } from "@/types/post.type";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -69,3 +70,18 @@ export const formatDate = (date: Date | string): string => {
     year: "numeric",
   }).format(dateObj);
 };
+
+// Type guard to validate if a string is a valid PostStatus
+export function isPostStatus(
+  value: string | null | undefined,
+): value is PostStatus {
+  return value === "DRAFT" || value === "PUBLISHED" || value === "ARCHIVED";
+}
+
+export function getPostStatusVariant(status: PostStatus) {
+  return status === "DRAFT"
+    ? "secondary"
+    : status === "PUBLISHED"
+      ? "default"
+      : "destructive";
+}

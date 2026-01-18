@@ -4,10 +4,10 @@ import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { CreateButton } from "@/components/admin/shared/create-button";
 import { FilterBar } from "@/components/admin/shared/filter-bar";
 import { MoreFilterButton } from "@/components/admin/shared/more-filter-button";
-import { DEFAULT_LIMIT, fetchPosts } from "@/services/post/api";
-import { postQueryKeys } from "@/services/post/key";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { Outlet, useSearchParams } from "react-router";
+import { isPostStatus } from "@/lib/utils";
+import { DEFAULT_LIMIT } from "@/services/post/api";
+import { useListPosts } from "@/services/post/queries/useGetPosts";
+import { useSearchParams } from "react-router";
 
 const AdminPostsPage = () => {
   const [searchParams] = useSearchParams();
@@ -19,17 +19,17 @@ const AdminPostsPage = () => {
       ? categoryParam.trim()
       : undefined;
 
+  const statusParam = searchParams.get("status");
+  const status = isPostStatus(statusParam) ? statusParam : undefined;
+
   const offset = (page - 1) * DEFAULT_LIMIT;
 
-  const { data } = useSuspenseQuery({
-    queryKey: postQueryKeys.list({
-      offset,
-      search,
-      limit: DEFAULT_LIMIT,
-      category,
-    }),
-    queryFn: () =>
-      fetchPosts({ offset, search, limit: DEFAULT_LIMIT, category }),
+  const { data } = useListPosts({
+    offset,
+    search,
+    limit: DEFAULT_LIMIT,
+    category,
+    status,
   });
 
   return (
@@ -64,7 +64,6 @@ const AdminPostsPage = () => {
           />
         )}
 
-        <Outlet />
       </div>
     </section>
   );

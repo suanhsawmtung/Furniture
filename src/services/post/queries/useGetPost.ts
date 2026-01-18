@@ -7,7 +7,9 @@ import {
 import { fetchPost } from "../api";
 import { postQueryKeys } from "../key";
 
-export function usePost(slug: string): UseSuspenseQueryResult<PostType, Error> {
+export function useGetPost(
+  slug: string,
+): UseSuspenseQueryResult<PostType, Error> {
   return useSuspenseQuery<PostType, Error>({
     queryKey: postQueryKeys.detail(slug),
     queryFn: () => fetchPost(slug),

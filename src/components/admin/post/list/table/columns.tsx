@@ -1,10 +1,12 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getPostStatusVariant } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import type { PostType } from "@/types/post.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
+import { DeletePostDialog } from "../../actions/delete-post-dialog";
 
 // Format author name from firstName and lastName
 const formatAuthorName = (author: PostType["author"]): string => {
@@ -26,9 +28,10 @@ const formatAuthorName = (author: PostType["author"]): string => {
 const ActionsCell = ({ post }: { post: PostType }) => {
   const authUser = useAuthStore((state) => state.authUser);
   const isAuthor = authUser?.id === post.authorId;
+  const isAdmin = authUser?.role === "ADMIN";
 
   return (
-    <div className="flex items-center justify-start gap-1">
+    <div className="flex items-center justify-end gap-1">
       <Button
         variant="outline"
         size="sm"
@@ -44,7 +47,7 @@ const ActionsCell = ({ post }: { post: PostType }) => {
         </Link>
       </Button>
 
-      {isAuthor && (
+      {(isAuthor || isAdmin) && (
         <>
           <Button
             variant="outline"
@@ -57,16 +60,16 @@ const ActionsCell = ({ post }: { post: PostType }) => {
             </Link>
           </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
-            asChild
-          >
-            <Link to={`/admin/posts/${post.slug}/delete`}>
-              <Trash2Icon size={16} />
-            </Link>
-          </Button>
+          <DeletePostDialog post={post}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
+              asChild
+            >
+              <Trash2Icon size={16} />  
+            </Button>        
+          </DeletePostDialog>
         </>
       )}
     </div>
@@ -126,19 +129,38 @@ export const columns: ColumnDef<PostType>[] = [
     },
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "status",
     header: () => {
       return (
         <div className="text-primary flex items-center justify-center text-sm font-semibold">
-          Posted Date
+          Status
         </div>
       );
     },
     cell: ({ row }) => {
-      const createdAt = row.getValue("createdAt") as Date | string;
+      const status = row.getValue("status") as PostType["status"];
+      const statusVariant = getPostStatusVariant(status);
+      return (
+        <div className="flex items-center justify-center">
+          <Badge variant={statusVariant}>{status}</Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "publishedAt",
+    header: () => {
+      return (
+        <div className="text-primary flex items-center justify-center text-sm font-semibold">
+          Published Date
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const publishedAt = row.getValue("publishedAt") as Date | string | null;
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
-          {formatDate(createdAt)}
+          {publishedAt ? formatDate(publishedAt) : "-"}
         </div>
       );
     },

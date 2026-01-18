@@ -9,21 +9,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { CategoryType } from "@/types";
+import type { CategoryFormValues } from "@/types/category.type";
+import { categorySchema } from "@/validations/common.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useNavigation, useSubmit } from "react-router";
-import z from "zod";
-
-const categorySchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Category name is required")
-    .max(52, "Category name must be 52 characters or less"),
-});
-
-type CategoryFormValues = z.infer<typeof categorySchema>;
 
 interface CategoryFormProps {
   category?: CategoryType;

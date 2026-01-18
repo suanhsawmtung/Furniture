@@ -22,9 +22,14 @@ import { loader as adminLoader } from "@/pages/admin/loader";
 import AdminMaterialsPage from "@/pages/admin/materials";
 import AdminOrdersPage from "@/pages/admin/orders";
 import AdminPostsPage from "@/pages/admin/posts";
+import AdminPostCreatePage from "@/pages/admin/posts/create";
+import { action as adminCreatePostAction } from "@/pages/admin/posts/create/action";
 import AdminPostDetailPage from "@/pages/admin/posts/detail";
 import { loader as adminPostDetailLoader } from "@/pages/admin/posts/detail/loader";
 import { loader as adminPostsLoader } from "@/pages/admin/posts/loader";
+import AdminPostEditPage from "@/pages/admin/posts/update";
+import { action as adminUpdatePostAction } from "@/pages/admin/posts/update/action";
+import { loader as adminEditPostLoader } from "@/pages/admin/posts/update/loader";
 import AdminProductsPage from "@/pages/admin/products";
 import AdminSettingsPage from "@/pages/admin/settings";
 import AdminTypesPage from "@/pages/admin/types";
@@ -190,11 +195,23 @@ export const router = createBrowserRouter([
             index: true,
             Component: AdminPostsPage,
             loader: adminPostsLoader,
+            
+          },
+          {
+            path: "create",
+            Component: AdminPostCreatePage,
+            action: adminCreatePostAction,
           },
           {
             path: ":slug",
             Component: AdminPostDetailPage,
             loader: adminPostDetailLoader,
+          },
+          {
+            path: ":slug/edit",
+            Component: AdminPostEditPage,
+            loader: adminEditPostLoader,
+            action: adminUpdatePostAction,
           },
         ],
       },
@@ -250,10 +267,10 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      {
-        path: "posts",
-        Component: AdminPostsPage,
-      },
+      // {
+      //   path: "posts",
+      //   Component: AdminPostsPage,
+      // },
       {
         path: "categories",
         Component: AdminCategoriesPage,

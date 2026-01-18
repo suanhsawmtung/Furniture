@@ -23,7 +23,6 @@ export async function action({ request }: ActionFunctionArgs) {
     // Set authenticated user in store before redirect
     if (response.data?.data) {
       const { setAuthUser } = useAuthStore.getState();
-      console.log(response.data.data, "hit");
       setAuthUser(response.data.data);
     }
 

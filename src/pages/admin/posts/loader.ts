@@ -1,6 +1,7 @@
-import { queryClient } from "@/lib/query-client";
-import { DEFAULT_LIMIT, fetchPosts } from "@/services/post/api";
-import { postQueryKeys } from "@/services/post/key";
+import { isPostStatus } from "@/lib/utils";
+import { DEFAULT_LIMIT } from "@/services/post/api";
+import { ensureListPosts } from "@/services/post/queries/useGetPosts";
+
 import type { LoaderFunctionArgs } from "react-router";
 import { redirect } from "react-router";
 
@@ -47,19 +48,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
       ? categoryParam.trim()
       : undefined;
 
+  const statusParam = searchParams.get("status");
+  const status = isPostStatus(statusParam) ? statusParam : undefined;
+
   // Convert page to offset (page 1 = offset 0, page 2 = offset 10, etc.)
   const offset = (page - 1) * DEFAULT_LIMIT;
 
   try {
-    await queryClient.ensureQueryData({
-      queryKey: postQueryKeys.list({
-        offset,
-        search,
-        limit: DEFAULT_LIMIT,
-        category,
-      }),
-      queryFn: () =>
-        fetchPosts({ offset, search, limit: DEFAULT_LIMIT, category }),
+    await ensureListPosts({
+      offset,
+      search,
+      limit: DEFAULT_LIMIT,
+      category,
+      status,
     });
 
     return null;

@@ -16,9 +16,6 @@ export async function action({ params }: ActionFunctionArgs) {
   try {
     const response = await deleteMaterial({ slug });
 
-    // Show success toast
-    toast.success(response.message || "Material deleted successfully");
-
     queryClient.removeQueries({
       queryKey: materialQueryKeys.detail(slug),
     });
@@ -26,6 +23,9 @@ export async function action({ params }: ActionFunctionArgs) {
     await queryClient.invalidateQueries({
       queryKey: materialQueryKeys.lists,
     });
+
+    // Show success toast
+    toast.success(response.message || "Material deleted successfully");
 
     // Redirect to materials list page
     return redirect("/admin/materials");
@@ -38,4 +38,3 @@ export async function action({ params }: ActionFunctionArgs) {
     throw error;
   }
 }
-

@@ -16,9 +16,6 @@ export async function action({ params }: ActionFunctionArgs) {
   try {
     const response = await deleteCategory({ slug });
 
-    // Show success toast
-    toast.success(response.message || "Category deleted successfully");
-
     queryClient.removeQueries({
       queryKey: categoryQueryKeys.detail(slug),
     });
@@ -26,6 +23,9 @@ export async function action({ params }: ActionFunctionArgs) {
     await queryClient.invalidateQueries({
       queryKey: categoryQueryKeys.lists,
     });
+
+    // Show success toast
+    toast.success(response.message || "Category deleted successfully");
 
     return redirect("/admin/categories");
   } catch (error) {

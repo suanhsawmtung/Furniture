@@ -11,7 +11,7 @@ export async function loader() {
   // If authUser exists in store, check role directly
   if (authUser) {
     // Check if user has admin role
-    if (authUser.role === "ADMIN") {
+    if (authUser.role === "ADMIN" || authUser.role === "AUTHOR") {
       return null; // Allow access
     } else {
       // User is authenticated but not admin, redirect to home
@@ -28,7 +28,7 @@ export async function loader() {
     setAuthUser(user);
 
     // Check if user has admin role
-    if (user.role === "ADMIN") {
+    if (user.role === "ADMIN" || user.role === "AUTHOR") {
       return null; // Allow access
     } else {
       // User is authenticated but not admin, redirect to home

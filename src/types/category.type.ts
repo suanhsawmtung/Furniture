@@ -1,3 +1,6 @@
+import type { categorySchema } from "@/validations/common.validation";
+import type z from "zod";
+
 export type CategoryType = {
   id: number;
   name: string;
@@ -61,3 +64,5 @@ export interface DeleteCategoryResponse {
   success: boolean;
   message: string;
 }
+
+export type CategoryFormValues = z.infer<typeof categorySchema>;
