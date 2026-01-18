@@ -1,4 +1,5 @@
 import type { PostStatus } from "@/types/post.type";
+import type { Role, Status } from "@/types/user.type";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -78,10 +79,68 @@ export function isPostStatus(
   return value === "DRAFT" || value === "PUBLISHED" || value === "ARCHIVED";
 }
 
+// Type guard to validate if a string is a valid Status
+export function isStatus(
+  value: string | null | undefined,
+): value is Status {
+  return value === "ACTIVE" || value === "INACTIVE" || value === "FREEZE";
+}
+
+// Type guard to validate if a string is a valid Role
+export function isRole(
+  value: string | null | undefined,
+): value is Role {
+  return value === "USER" || value === "ADMIN" || value === "AUTHOR";
+}
+
 export function getPostStatusVariant(status: PostStatus) {
   return status === "DRAFT"
     ? "secondary"
     : status === "PUBLISHED"
       ? "default"
       : "destructive";
+}
+
+// Get user role variant for badge
+export function getUserRoleVariant(role: Role) {
+  return role === "ADMIN"
+    ? "default"
+    : role === "AUTHOR"
+      ? "secondary"
+      : "outline";
+}
+
+// Get user status variant for badge
+export function getUserStatusVariant(status: Status) {
+  return status === "ACTIVE"
+    ? "default"
+    : status === "INACTIVE"
+      ? "secondary"
+      : "destructive";
+}
+
+// Format name from firstName and lastName
+// Returns "firstName lastName" if both exist, just firstName/lastName if one exists, or "-" if neither exists
+export function formatName({
+  firstName,
+  lastName,
+  username,
+}: {
+  firstName: string | null | undefined;
+  lastName: string | null | undefined;
+  username: string | null | undefined;
+}): string {
+  const first = firstName || "";
+  const last = lastName || "";
+
+  if (first && last) {
+    return `${first} ${last}`;
+  }
+  if (first) {
+    return first;
+  }
+  if (last) {
+    return last;
+  }
+  return username || "-";
 }

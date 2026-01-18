@@ -1,4 +1,4 @@
-import type { postSchema } from "@/validations/post.validation";
+import type { PostFilterFormSchema, postSchema } from "@/validations/post.validation";
 import type z from "zod";
 
 // PostStatus enum from backend
@@ -23,6 +23,7 @@ export type PostType = {
     lastName: string | null;
     phone: string | null;
     email: string;
+    username: string | null;
   };
   category: {
     id: number;
@@ -70,3 +71,5 @@ export interface CreatePostResponse {
 }
 
 export type PostFormValues = z.infer<typeof postSchema>;
+
+export type PostFilterFormValues = z.infer<typeof PostFilterFormSchema>;

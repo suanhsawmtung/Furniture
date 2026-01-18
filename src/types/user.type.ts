@@ -1,3 +1,6 @@
+import type { UserFilterFormSchema, userSchema } from "@/validations/user.validation";
+import type z from "zod";
+
 // Role enum from backend
 export type Role = "USER" | "ADMIN" | "AUTHOR";
 
@@ -18,3 +21,47 @@ export interface UserType {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface UserListResult {
+  users: UserType[];
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+}
+
+export interface UserQueryParams {
+  limit?: number;
+  offset?: number;
+  search?: string;
+  role?: string;
+  status?: string;
+}
+
+export interface CreateUserResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    user: UserType;
+  };
+}
+
+export interface UpdateUserResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    user: UserType;
+  };
+}
+
+export interface DeleteUserParams {
+  username: string;
+}
+
+export interface DeleteUserResponse {
+  success: boolean;
+  message: string;
+}
+
+export type UserFormValues = z.infer<typeof userSchema>;
+
+export type UserFilterFormValues = z.infer<typeof UserFilterFormSchema>;

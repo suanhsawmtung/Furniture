@@ -24,9 +24,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   try {
     const response = await updateCategory({ slug, name });
 
-    // Show success toast
-    toast.success(response.message || "Category updated successfully");
-
     await queryClient.invalidateQueries({
       queryKey: categoryQueryKeys.detail(slug),
     });
@@ -34,6 +31,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
     await queryClient.invalidateQueries({
       queryKey: categoryQueryKeys.lists,
     });
+
+    // Show success toast
+    toast.success(response.message || "Category updated successfully");
 
     return redirect("/admin/categories");
   } catch (error) {

@@ -34,6 +34,15 @@ import AdminProductsPage from "@/pages/admin/products";
 import AdminSettingsPage from "@/pages/admin/settings";
 import AdminTypesPage from "@/pages/admin/types";
 import AdminUsersPage from "@/pages/admin/users";
+import AdminUserCreateDialog from "@/pages/admin/users/create";
+import { action as adminCreateUserAction } from "@/pages/admin/users/create/action";
+import AdminUserDeleteDialog from "@/pages/admin/users/delete";
+import { action as adminDeleteUserAction } from "@/pages/admin/users/delete/action";
+import { loader as adminDeleteUserLoader } from "@/pages/admin/users/delete/loader";
+import { loader as adminUsersLoader } from "@/pages/admin/users/loader";
+import AdminUserEditDialog from "@/pages/admin/users/update";
+import { action as adminUpdateUserAction } from "@/pages/admin/users/update/action";
+import { loader as adminEditUserLoader } from "@/pages/admin/users/update/loader";
 import { action as confirmPasswordAction } from "@/pages/auth/confirm-password/action";
 import { loader as confirmPasswordLoader } from "@/pages/auth/confirm-password/loader";
 import { action as forgotPasswordAction } from "@/pages/auth/forgot-password/action";
@@ -298,6 +307,26 @@ export const router = createBrowserRouter([
       {
         path: "users",
         Component: AdminUsersPage,
+        loader: adminUsersLoader,
+        children: [
+          {
+            path: "create",
+            Component: AdminUserCreateDialog,
+            action: adminCreateUserAction,
+          },
+          {
+            path: ":username/edit",
+            Component: AdminUserEditDialog,
+            loader: adminEditUserLoader,
+            action: adminUpdateUserAction,
+          },
+          {
+            path: ":username/delete",
+            Component: AdminUserDeleteDialog,
+            loader: adminDeleteUserLoader,
+            action: adminDeleteUserAction,
+          },
+        ],
       },
       {
         path: "orders",

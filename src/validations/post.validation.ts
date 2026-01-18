@@ -16,3 +16,9 @@ export const postSchema = z.object({
   image: z.instanceof(File).optional(),
   status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional(),
 });
+
+export const PostFilterFormSchema = z.object({
+  search: z.string().optional(),
+  category: z.string().optional(),
+  status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).optional(),
+});

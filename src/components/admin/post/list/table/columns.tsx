@@ -1,28 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { formatDate, getPostStatusVariant } from "@/lib/utils";
+import { formatDate, formatName, getPostStatusVariant } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import type { PostType } from "@/types/post.type";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
 import { DeletePostDialog } from "../../actions/delete-post-dialog";
-
-// Format author name from firstName and lastName
-const formatAuthorName = (author: PostType["author"]): string => {
-  const firstName = author.firstName || "";
-  const lastName = author.lastName || "";
-  if (firstName && lastName) {
-    return `${firstName} ${lastName}`;
-  }
-  if (firstName) {
-    return firstName;
-  }
-  if (lastName) {
-    return lastName;
-  }
-  return author.email;
-};
 
 // Actions cell component that can use hooks
 const ActionsCell = ({ post }: { post: PostType }) => {
@@ -102,7 +86,11 @@ export const columns: ColumnDef<PostType>[] = [
       );
     },
     cell: ({ row }) => {
-      const authorName = formatAuthorName(row.original.author);
+      const authorName = formatName({
+        firstName: row.original.author.firstName,
+        lastName: row.original.author.lastName,
+        username: row.original.author.username,
+      });
       return (
         <div className="text-muted-foreground text-center text-sm font-normal">
           {authorName}

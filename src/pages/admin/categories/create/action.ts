@@ -18,12 +18,12 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const response = await createCategory({ name });
 
-    // Show success toast
-    toast.success(response.message || "Category created successfully");
-
     await queryClient.invalidateQueries({
       queryKey: categoryQueryKeys.all,
     });
+
+    // Show success toast
+    toast.success(response.message || "Category created successfully");
 
     // Redirect to categories list page
     return redirect("/admin/categories");
