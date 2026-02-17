@@ -175,3 +175,26 @@ export function getGenderVariant(gender: Gender) {
       ? "secondary"
       : "outline";
 }
+
+// Type guard to validate if a string is a valid OrderStatus
+export function isOrderStatus(
+  value: string | null | undefined,
+): value is OrderStatus {
+  return (
+    value === "PENDING" ||
+    value === "REJECTED" ||
+    value === "ACCEPTED" ||
+    value === "DONE"
+  );
+}
+
+// Type guard to validate if a string is a valid PaymentStatus
+export function isPaymentStatus(
+  value: string | null | undefined,
+): value is PaymentStatus {
+  return value === "PAID" || value === "UNPAID";
+}
+
+export const sleep = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
+

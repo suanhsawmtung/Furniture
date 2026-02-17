@@ -20,6 +20,7 @@ import AdminLayout from "@/components/layouts/admin-layout";
 import AdminCategoriesPage from "@/pages/admin/categories";
 import { loader as adminLoader } from "@/pages/admin/loader";
 import AdminOrdersPage from "@/pages/admin/orders";
+import { loader as adminOrdersLoader } from "@/pages/admin/orders/loader";
 import AdminPostsPage from "@/pages/admin/posts";
 import AdminPostCreatePage from "@/pages/admin/posts/create";
 import { action as adminCreatePostAction } from "@/pages/admin/posts/create/action";
@@ -39,11 +40,14 @@ import AdminProductEditPage from "@/pages/admin/products/update";
 import { action as adminUpdateProductAction } from "@/pages/admin/products/update/action";
 import { loader as adminEditProductLoader } from "@/pages/admin/products/update/loader";
 import AdminProductVariantsPage from "@/pages/admin/products/variants";
-import { loader as adminProductVariantsLoader } from "@/pages/admin/products/variants/loader";
 import AdminProductVariantCreatePage from "@/pages/admin/products/variants/create";
 import { action as adminCreateProductVariantAction } from "@/pages/admin/products/variants/create/action";
 import AdminProductVariantDetailPage from "@/pages/admin/products/variants/detail";
 import { loader as adminProductVariantDetailLoader } from "@/pages/admin/products/variants/detail/loader";
+import { loader as adminProductVariantsLoader } from "@/pages/admin/products/variants/loader";
+import AdminProductVariantEditPage from "@/pages/admin/products/variants/update";
+import { action as adminUpdateProductVariantAction } from "@/pages/admin/products/variants/update/action";
+import { loader as adminEditProductVariantLoader } from "@/pages/admin/products/variants/update/loader";
 import AdminSettingsPage from "@/pages/admin/settings";
 import AdminUsersPage from "@/pages/admin/users";
 import AdminUserCreateDialog from "@/pages/admin/users/create";
@@ -95,6 +99,7 @@ import { loader as adminCategoriesLoader } from "@/pages/admin/categories/loader
 import AdminCategoryEditDialog from "@/pages/admin/categories/update";
 import { action as adminUpdateCategoryAction } from "@/pages/admin/categories/update/action";
 import { loader as adminEditCategoryLoader } from "@/pages/admin/categories/update/loader";
+import AdminDashboardPage from "./pages/admin";
 
 export const router = createBrowserRouter([
   {
@@ -202,6 +207,11 @@ export const router = createBrowserRouter([
     loader: adminLoader,
     children: [
       {
+        index: true,
+        Component: AdminDashboardPage,
+        // loader: adminDashboardLoader,
+      },
+      {
         path: "posts",
         children: [
           {
@@ -261,6 +271,12 @@ export const router = createBrowserRouter([
             path: ":slug/variants/create",
             Component: AdminProductVariantCreatePage,
             action: adminCreateProductVariantAction,
+          },
+          {
+            path: ":slug/variants/:variantSlug/edit",
+            Component: AdminProductVariantEditPage,
+            loader: adminEditProductVariantLoader,
+            action: adminUpdateProductVariantAction,
           },
           {
             path: ":slug/variants/:variantSlug",
@@ -396,6 +412,7 @@ export const router = createBrowserRouter([
       {
         path: "orders",
         Component: AdminOrdersPage,
+        loader: adminOrdersLoader,
       },
       {
         path: "settings",

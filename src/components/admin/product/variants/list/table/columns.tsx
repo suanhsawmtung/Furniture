@@ -10,9 +10,11 @@ import { DeleteVariantDialog } from "../../actions/delete-variant-dialog";
 const ActionsCell = ({
   productSlug,
   variant,
+  totalVariantCount,
 }: {
   productSlug: string;
   variant: ProductVariantSummaryType;
+  totalVariantCount: number;
 }) => {
   return (
     <div className="flex items-center justify-end gap-1">
@@ -44,7 +46,7 @@ const ActionsCell = ({
         </Link>
       </Button>
 
-      <DeleteVariantDialog variant={variant}>
+      <DeleteVariantDialog variant={variant} totalVariantCount={totalVariantCount}>
         <Button
           variant="outline"
           size="sm"
@@ -58,9 +60,13 @@ const ActionsCell = ({
   );
 };
 
-export const getVariantColumns = (
-  productSlug: string,
-): ColumnDef<ProductVariantSummaryType>[] => [
+export const getVariantColumns = ({
+  productSlug,
+  totalVariantCount,
+}: {
+  productSlug: string;
+  totalVariantCount: number;
+}): ColumnDef<ProductVariantSummaryType>[] => [
   {
     accessorKey: "sku",
     header: () => (
@@ -212,7 +218,7 @@ export const getVariantColumns = (
     id: "actions",
     header: "",
     cell: ({ row }) => (
-      <ActionsCell productSlug={productSlug} variant={row.original} />
+      <ActionsCell productSlug={productSlug} variant={row.original} totalVariantCount={totalVariantCount} />
     ),
   },
 ];

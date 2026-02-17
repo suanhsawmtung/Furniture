@@ -1,7 +1,7 @@
 import type {
-  Concentration,
-  Gender,
-  VariantSource,
+    Concentration,
+    Gender,
+    VariantSource,
 } from "@/types/product.type";
 import { z } from "zod";
 
@@ -63,7 +63,7 @@ export const productVariantSchema = z.object({
   isPrimary: z.boolean().optional(),
   isActive: z.boolean().optional(),
   images: z
-    .array(z.instanceof(File))
+    .array(z.union([z.instanceof(File), z.string()]))
     .min(1, "At least one image is required as the primary product image")
     .max(4, "You can upload up to 4 images"),
 });

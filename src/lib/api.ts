@@ -1,5 +1,10 @@
 import { baseApiUrl } from "@/config/env";
-import axios from "axios";
+import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
+import { sleep } from "./utils";
+
+interface RetryConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean;
+}
 
 // Create axios instance with default config
 const api = axios.create({
@@ -26,14 +31,31 @@ const api = axios.create({
 // );
 
 // Response interceptor
-// api.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response?.status === 401) {
-//       window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
-//     }
-//     return Promise.reject(error);
-//   },
-// );
+api.interceptors.response.use(
+  (response) => response,
+
+  async (error: AxiosError<any>) => {
+    const config = error.config as RetryConfig | undefined;
+
+    if (!config || config._retry) {
+      return Promise.reject(error);
+    }
+
+    const errorCode = error.response?.data?.error;
+
+    // ✅ Only retry for this specific backend error
+    if (errorCode === "Error_RetryAndLogout") {
+      config._retry = true;
+
+      // ⏳ Optional delay (e.g. 500ms)
+      await sleep(500);
+
+      return api(config);
+    }
+
+    return Promise.reject(error);
+  }
+);
+
 
 export default api;

@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
+import { baseImageUrl } from "@/config/env";
 import { cn } from "@/lib/utils";
-import type { VariantSource } from "@/types/product.type";
+import type { ProductVariantType, VariantSource } from "@/types/product.type";
 import {
   productVariantSchema,
   type ProductVariantFormValues,
@@ -26,6 +27,7 @@ interface ProductVariantFormProps {
   productSlug: string;
   cancelUrl?: string;
   submitButtonText?: string;
+  variant?: ProductVariantType;
 }
 
 const sourceOptions: Array<{ key: VariantSource; text: string }> = [
@@ -45,37 +47,58 @@ export function ProductVariantForm({
   productSlug,
   cancelUrl,
   submitButtonText,
+  variant,
 }: ProductVariantFormProps) {
   const navigate = useNavigate();
   const submit = useSubmit();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
-  const [isPrimary, setIsPrimary] = useState(false);
-  const [imageSlots, setImageSlots] = useState<(File | null)[]>(
-    Array.from({ length: 4 }, () => null),
+  const isEditMode = !!variant;
+  const [isPrimary, setIsPrimary] = useState(variant?.isPrimary || false);
+
+  const initialImageSlots = useMemo(() => {
+    if (variant?.images && variant.images.length > 0) {
+      const sortedImages = [...variant.images].sort(
+        (a, b) => Number(b.isPrimary) - Number(a.isPrimary),
+      );
+      return [
+        ...sortedImages.map((img) => img.path),
+        ...Array(4 - sortedImages.length).fill(null),
+      ].slice(0, 4);
+    }
+    return Array.from({ length: 4 }, () => null);
+  }, [variant]);
+
+  const [imageSlots, setImageSlots] = useState<(File | string | null)[]>(
+    initialImageSlots,
   );
 
   const form = useForm<ProductVariantFormValues>({
     resolver: zodResolver(productVariantSchema),
     defaultValues: {
-      size: undefined,
-      source: "ORIGINAL",
-      price: undefined,
-      discount: undefined,
-      stock: undefined,
-      isPrimary: false,
-      isActive: true,
-      images: [],
+      size: variant?.size || undefined,
+      source: variant?.source || "ORIGINAL",
+      price: variant?.price ? Number(variant.price) : undefined,
+      discount: variant?.discount ? Number(variant.discount) : undefined,
+      stock: variant?.stock !== undefined ? Number(variant.stock) : undefined,
+      isPrimary: variant?.isPrimary || false,
+      isActive: variant?.isActive ?? true,
+      images: initialImageSlots.filter((slot): slot is string => !!slot),
     },
   });
 
   const previewUrls = useMemo(
-    () => imageSlots.map((file) => (file ? URL.createObjectURL(file) : null)),
+    () =>
+      imageSlots.map((slot) => {
+        if (!slot) return null;
+        if (slot instanceof File) return URL.createObjectURL(slot);
+        return baseImageUrl + "product/" + slot;
+      }),
     [imageSlots],
   );
 
   const nextEnabledIndex = useMemo(() => {
-    const firstEmpty = imageSlots.findIndex((file) => !file);
+    const firstEmpty = imageSlots.findIndex((slot) => !slot);
     return firstEmpty === -1 ? imageSlots.length - 1 : firstEmpty;
   }, [imageSlots]);
 
@@ -88,11 +111,14 @@ export function ProductVariantForm({
 
   useEffect(() => {
     return () => {
-      previewUrls.forEach((url) => {
-        if (url) URL.revokeObjectURL(url);
+      previewUrls.forEach((url, index) => {
+        const slot = imageSlots[index];
+        if (slot instanceof File && url) {
+          URL.revokeObjectURL(url);
+        }
       });
     };
-  }, [previewUrls]);
+  }, [previewUrls, imageSlots]);
 
   const handleImageChange =
     (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,8 +130,10 @@ export function ProductVariantForm({
       nextSlots[index] = file;
       setImageSlots(nextSlots);
 
-      const nextImages = nextSlots.filter((item): item is File => !!item);
-      form.setValue("images", nextImages, {
+      const nextImages = nextSlots.filter(
+        (item): item is File | string => !!item,
+      );
+      form.setValue("images", nextImages as any, {
         shouldValidate: true,
         shouldDirty: true,
       });
@@ -116,8 +144,10 @@ export function ProductVariantForm({
     nextSlots[index] = null;
     setImageSlots(nextSlots);
 
-    const nextImages = nextSlots.filter((item): item is File => !!item);
-    form.setValue("images", nextImages, {
+    const nextImages = nextSlots.filter(
+      (item): item is File | string => !!item,
+    );
+    form.setValue("images", nextImages as any, {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -150,14 +180,28 @@ export function ProductVariantForm({
     if (typeof values.isActive === "boolean") {
       formData.append("isActive", String(values.isActive));
     }
-    values.images.forEach((file) => {
-      formData.append("images", file);
-    });
+
+    // Only append images if there are NEW files selected
+    // Note: We now send a fixed 4-slot imageLayout to allow precise updates/replacements
+    // Pattern: ["existing.jpg", "__NEW__", "__EMPTY__", "__EMPTY__"]
+    for (let i = 0; i < 4; i++) {
+        const image = values.images[i];
+        if (image instanceof File) {
+            formData.append("images", image);
+            formData.append("imageLayout", "__NEW__");
+        } else if (typeof image === "string") {
+            formData.append("imageLayout", image);
+        } else {
+            formData.append("imageLayout", "__EMPTY__");
+        }
+    }
 
     submit(formData, {
-      method: "POST",
+      method: isEditMode ? "PATCH" : "POST",
       encType: "multipart/form-data",
-      action: `/admin/products/${productSlug}/variants/create`,
+      action: isEditMode
+        ? `/admin/products/${productSlug}/variants/${variant?.slug}/edit`
+        : `/admin/products/${productSlug}/variants/create`,
     });
   };
 
@@ -455,7 +499,7 @@ export function ProductVariantForm({
                 {isSubmitting && (
                   <Loader2 className="mr-2 size-4 animate-spin" />
                 )}
-                {submitButtonText || "Create"}
+                {submitButtonText || (isEditMode ? "Update" : "Create")}
               </Button>
             </div>
           </div>

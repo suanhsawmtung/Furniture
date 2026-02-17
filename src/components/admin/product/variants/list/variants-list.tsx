@@ -14,7 +14,7 @@ export function ProductVariantsList({
   productSlug: string;
   variants: ProductVariantSummaryType[];
 }) {
-  const columns = getVariantColumns(productSlug);
+  const columns = getVariantColumns({ productSlug, totalVariantCount: variants.length });
 
   return (
     <Card>

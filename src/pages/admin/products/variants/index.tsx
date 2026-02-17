@@ -19,7 +19,7 @@ const AdminProductVariantsPage = () => {
       <AdminHeaderSection title="Product Variants" />
 
       <div className="space-y-5">
-        <div className="flex w-full flex-col items-start justify-start gap-2">
+        <div className="flex w-full items-end justify-between gap-2">
           <BackButton to="/admin/products" />
           <CreateButton
             text="Create Variant"

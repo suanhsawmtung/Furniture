@@ -47,15 +47,9 @@ export function NavItem({
   const hasActiveChild = accessibleChildren.some((child) => {
     if (pathname === child.href) return true;
     // If on /admin/ index route, highlight Posts
-    if (
-      (pathname === "/admin" || pathname === "/admin/") &&
-      item.title === "Post Management" &&
-      child.href === "/admin/posts"
-    ) {
-      return true;
-    }
     return false;
   });
+
   const isActive = pathname === item.href || hasActiveChild;
 
   // If item has no children, render as a Link
@@ -105,11 +99,7 @@ export function NavItem({
         <div className="mt-1 ml-8 space-y-1">
           {accessibleChildren.map((child) => {
             // Check if child is active, including /admin/ index route for Posts
-            const isChildActive =
-              pathname === child.href ||
-              ((pathname === "/admin" || pathname === "/admin/") &&
-                item.title === "Post Management" &&
-                child.href === "/admin/posts");
+            const isChildActive = pathname === child.href
             return (
               <Link
                 key={child.href}

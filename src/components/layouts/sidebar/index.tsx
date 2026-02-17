@@ -6,11 +6,12 @@ import { formatUserDisplayName, getUserInitials } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import {
   FileText,
+  LayoutDashboard,
   Package,
   Settings,
   ShoppingCart,
   Users,
-  X,
+  X
 } from "lucide-react";
 import { Link, useLocation } from "react-router";
 
@@ -34,13 +35,16 @@ export interface NavItemConfig {
 
 const navItems: NavItemConfig[] = [
   {
-    title: "Post Management",
-    icon: FileText,
+    title: "Dashboard",
+    href: "/admin",
+    icon: LayoutDashboard,
     roles: ["ADMIN", "AUTHOR"],
-    children: [
-      { title: "Posts", href: "/admin/posts" },
-      { title: "Categories", href: "/admin/categories" },
-    ],
+  },
+    {
+    title: "Order Management",
+    href: "/admin/orders",
+    icon: ShoppingCart,
+    roles: ["ADMIN"],
   },
   {
     title: "Product Management",
@@ -53,16 +57,19 @@ const navItems: NavItemConfig[] = [
       { title: "Brands", href: "/admin/brands" },
     ],
   },
+    {
+    title: "Post Management",
+    icon: FileText,
+    roles: ["ADMIN", "AUTHOR"],
+    children: [
+      { title: "Posts", href: "/admin/posts" },
+      { title: "Categories", href: "/admin/categories" },
+    ],
+  },
   {
     title: "User Management",
     href: "/admin/users",
     icon: Users,
-    roles: ["ADMIN"],
-  },
-  {
-    title: "Order Management",
-    href: "/admin/orders",
-    icon: ShoppingCart,
     roles: ["ADMIN"],
   },
   {
@@ -121,17 +128,6 @@ export function Sidebar({ onClose }: SidebarProps) {
   useEffect(() => {
     // Reset manual toggle tracking on pathname change
     manuallyToggledRef.current = null;
-
-    // If on /admin/ index route, open Post Management
-    if (pathname === "/admin" || pathname === "/admin/") {
-      const postManagement = filteredNavItems.find(
-        (item) => item.title === "Post Management",
-      );
-      if (postManagement) {
-        setOpenItem("Post Management");
-      }
-      return;
-    }
 
     const activeItem = filteredNavItems.find((item) => {
       if (!item.children) return false;

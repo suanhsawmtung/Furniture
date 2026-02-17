@@ -9,11 +9,13 @@ import { useParams } from "react-router";
 interface DeleteVariantDialogProps {
   variant: ProductVariantSummaryType;
   children: React.ReactNode;
+  totalVariantCount: number;
 }
 
 export function DeleteVariantDialog({
   variant,
   children,
+  totalVariantCount,
 }: DeleteVariantDialogProps) {
   const deleteVariantMutation = useDeleteVariantMutation();
   const [open, setOpen] = useState(false);
@@ -46,7 +48,7 @@ export function DeleteVariantDialog({
       triggerContent={children}
     >
       <div className="space-y-6">
-        {variant.isPrimary ? (
+        {(variant.isPrimary && totalVariantCount > 1) ? (
           <p className="text-muted-foreground text-sm">
             Primary variant cannot be deleted. Please select another variant as
             primary before deleting this variant.
@@ -66,7 +68,7 @@ export function DeleteVariantDialog({
           >
             {variant.isPrimary ? "Close" : "Cancel"}
           </Button>
-          {!variant.isPrimary && (
+          {(!variant.isPrimary || totalVariantCount === 1) && (
             <Button
               type="button"
               variant="destructive"

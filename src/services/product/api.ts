@@ -139,6 +139,25 @@ export async function createProductVariant(
   return response.data;
 }
 
+export async function updateProductVariant(
+  slug: string,
+  variantSlug: string,
+  formData: FormData,
+): Promise<CreateProductVariantResponse> {
+  const response = await api.patch(
+    `/admin/products/${slug}/variants/${variantSlug}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+
+  // Backend returns: { success: true, data: { variant }, message: string }
+  return response.data;
+}
+
 export async function deleteProductVariant({
   productSlug,
   variantSlug,
