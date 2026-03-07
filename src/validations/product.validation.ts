@@ -55,6 +55,10 @@ export const productVariantSchema = z.object({
     .array(z.union([z.instanceof(File), z.string()]))
     .min(1, "At least one image is required as the primary product image")
     .max(4, "You can upload up to 4 images"),
+})
+.refine((data) => (data.discount ?? 0) <= data.price, {
+  message: "Discount cannot be greater than price",
+  path: ["discount"],
 });
 
 export type ProductVariantFormValues = z.infer<typeof productVariantSchema>;

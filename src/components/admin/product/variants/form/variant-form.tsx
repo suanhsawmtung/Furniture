@@ -181,6 +181,14 @@ export function ProductVariantForm({
       formData.append("isActive", String(values.isActive));
     }
 
+    if(values.price < (values.discount || 0)){
+      form.setError("discount", {
+        type: "manual",
+        message: "Discount cannot be greater than price",
+      });
+      return;
+    }
+
     // Only append images if there are NEW files selected
     // Note: We now send a fixed 4-slot imageLayout to allow precise updates/replacements
     // Pattern: ["existing.jpg", "__NEW__", "__EMPTY__", "__EMPTY__"]
@@ -422,9 +430,10 @@ export function ProductVariantForm({
                       step="0.01"
                       onWheel={(event) => event.currentTarget.blur()}
                       value={field.value ?? ""}
-                      onChange={(event) =>
-                        field.onChange(toOptionalNumber(event.target.value))
-                      }
+                      onChange={(event) => {
+                        const newPrice = toOptionalNumber(event.target.value);
+                        field.onChange(newPrice);
+                      }}
                       disabled={isSubmitting}
                     />
                   </FormControl>
