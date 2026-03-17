@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { isOrderSource, isOrderStatus, isPaymentStatus } from "@/lib/utils";
-import type { OrderFilterFormValues, OrderSource, OrderStatus, PaymentStatus } from "@/types/order.type";
+import type { OrderFilterFormValues, OrderPaymentStatus, OrderSource, OrderStatus } from "@/types/order.type";
 import { orderFilterFormSchema } from "@/validations/order.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -25,7 +25,7 @@ const orderStatusOptions: Array<{ key: OrderStatus; text: string }> = [
   { key: "DONE", text: "Done" },
 ];
 
-const paymentStatusOptions: Array<{ key: PaymentStatus; text: string }> = [
+const paymentStatusOptions: Array<{ key: OrderPaymentStatus; text: string }> = [
   { key: "PENDING", text: "Pending" },
   { key: "UNPAID", text: "Unpaid" },
   { key: "PAID", text: "Paid" },

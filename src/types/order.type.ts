@@ -4,7 +4,7 @@ import type { BrandType } from "./brand.type";
 import type { ProductType, VariantSource } from "./product.type";
 
 export type OrderStatus = "PENDING" | "REJECTED" | "ACCEPTED" | "DONE" | "CANCELLED";
-export type PaymentStatus = "UNPAID" | "PAID" | "PENDING" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
+export type OrderPaymentStatus = "UNPAID" | "PAID" | "PENDING" | "FAILED" | "REFUNDED" | "PARTIALLY_REFUNDED";
 export type OrderSource = "CUSTOMER" | "ADMIN";
 
 export interface OrderType {
@@ -12,7 +12,7 @@ export interface OrderType {
   code: string;
   totalPrice: number;
   status: OrderStatus;
-  paymentStatus: PaymentStatus;
+  paymentStatus: OrderPaymentStatus;
   customerName: string | null;
   customerPhone: string | null;
   customerAddress: string | null;
@@ -104,7 +104,7 @@ export interface CreateOrderParams {
   customerAddress: string;
   customerNotes?: string;
   status: OrderStatus;
-  paymentStatus: PaymentStatus;
+  paymentStatus: OrderPaymentStatus;
   userId: number;
   items: OrderItemCreateInput[];
   rejectedReason?: string;

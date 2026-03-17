@@ -40,11 +40,14 @@ const navItems: NavItemConfig[] = [
     icon: LayoutDashboard,
     roles: ["ADMIN", "AUTHOR"],
   },
-    {
+  {
     title: "Order Management",
-    href: "/admin/orders",
     icon: ShoppingCart,
     roles: ["ADMIN"],
+    children: [
+      { title: "Orders", href: "/admin/orders" },
+      { title: "Refunds", href: "/admin/refunds" },
+    ],
   },
   {
     title: "Product Management",

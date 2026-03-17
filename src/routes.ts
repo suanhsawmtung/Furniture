@@ -116,6 +116,16 @@ import { loader as adminReviewsLoader } from "@/pages/admin/reviews/loader";
 import AdminProductRatingsPage from "@/pages/admin/product-ratings";
 import { loader as adminProductRatingsLoader } from "@/pages/admin/product-ratings/loader";
 
+import AdminRefundsPage from "@/pages/admin/refunds";
+import AdminRefundCreatePage from "@/pages/admin/refunds/create";
+import { action as adminRefundCreateAction } from "@/pages/admin/refunds/create/action";
+import AdminRefundDetailPage from "@/pages/admin/refunds/detail";
+import { loader as adminRefundDetailLoader } from "@/pages/admin/refunds/detail/loader";
+import { loader as adminRefundsLoader } from "@/pages/admin/refunds/loader";
+import AdminRefundUpdatePage from "@/pages/admin/refunds/update";
+import { action as adminUpdateRefundAction } from "@/pages/admin/refunds/update/action";
+import { loader as adminEditRefundLoader } from "@/pages/admin/refunds/update/loader";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -473,6 +483,32 @@ export const router = createBrowserRouter([
             path: "summary",
             Component: AdminProductRatingsPage,
             loader: adminProductRatingsLoader,
+          },
+        ],
+      },
+      {
+        path: "refunds",
+        children: [
+          {
+            index: true,
+            Component: AdminRefundsPage,
+            loader: adminRefundsLoader,
+          },
+          {
+            path: "create",
+            Component: AdminRefundCreatePage,
+            action: adminRefundCreateAction,
+          },
+          {
+            path: ":id",
+            Component: AdminRefundDetailPage,
+            loader: adminRefundDetailLoader,
+          },
+          {
+            path: ":id/edit",
+            Component: AdminRefundUpdatePage,
+            action: adminUpdateRefundAction,
+            loader: adminEditRefundLoader,
           },
         ],
       },

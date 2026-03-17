@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { baseImageUrl } from "@/config/env";
 import { cn, formatPrice } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
-import type { OrderDetailType, OrderStatus, PaymentStatus } from "@/types/order.type";
+import type { OrderDetailType, OrderPaymentStatus, OrderStatus } from "@/types/order.type";
 import type { OrderFormValues } from "@/validations/order.validation";
 import { orderFormSchema } from "@/validations/order.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,7 +33,7 @@ const statusOptions: Array<{ key: OrderStatus; text: string }> = [
   { key: "DONE", text: "Done" },
 ];
 
-const paymentStatusOptions: Array<{ key: PaymentStatus; text: string }> = [
+const paymentStatusOptions: Array<{ key: OrderPaymentStatus; text: string }> = [
   { key: "PENDING", text: "Pending" },
   { key: "UNPAID", text: "Unpaid" },
   { key: "PAID", text: "Paid" },
@@ -43,8 +43,8 @@ const paymentStatusOptions: Array<{ key: PaymentStatus; text: string }> = [
 ];
 
 interface StatusConfig {
-  allowedPaymentStatus: readonly PaymentStatus[];
-  defaultPaymentStatus: PaymentStatus;
+  allowedPaymentStatus: readonly OrderPaymentStatus[];
+  defaultPaymentStatus: OrderPaymentStatus;
 }
 
 export const orderStatusTransitions: Record<OrderStatus, readonly OrderStatus[]> = {
@@ -55,7 +55,7 @@ export const orderStatusTransitions: Record<OrderStatus, readonly OrderStatus[]>
   CANCELLED: [],
 } as const;
 
-export const paymentStatusTransitions: Record<PaymentStatus, readonly PaymentStatus[]> = {
+export const paymentStatusTransitions: Record<OrderPaymentStatus, readonly OrderPaymentStatus[]> = {
   PENDING: ["UNPAID", "FAILED", "PAID"],
   UNPAID: ["PENDING", "FAILED"],
   PAID: ["PARTIALLY_REFUNDED", "REFUNDED"],
@@ -261,7 +261,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
 
     // Validation: Status Compatibility
     const statusConfig = orderStatusConfig[values.status as OrderStatus];
-    if (statusConfig && !statusConfig.allowedPaymentStatus.includes(values.paymentStatus as PaymentStatus)) {
+    if (statusConfig && !statusConfig.allowedPaymentStatus.includes(values.paymentStatus as OrderPaymentStatus)) {
       toast.error(`Payment status ${values.paymentStatus} is not allowed for order status ${values.status}`);
       return;
     }
@@ -269,7 +269,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
     // Validation: Payment Status Transition
     if (isEditMode && order?.paymentStatus) {
       const allowedTransitions = paymentStatusTransitions[order.paymentStatus];
-      if (values.paymentStatus !== order.paymentStatus && !allowedTransitions.includes(values.paymentStatus as PaymentStatus)) {
+      if (values.paymentStatus !== order.paymentStatus && !allowedTransitions.includes(values.paymentStatus as OrderPaymentStatus)) {
         toast.error(`Cannot change payment status from ${order.paymentStatus} to ${values.paymentStatus}`);
         return;
       }
@@ -328,7 +328,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
     const currentPaymentStatus = form.getValues("paymentStatus");
     
     // Check if current payment status is allowed for the new order status
-    if (!config.allowedPaymentStatus.includes(currentPaymentStatus as PaymentStatus)) {
+    if (!config.allowedPaymentStatus.includes(currentPaymentStatus as OrderPaymentStatus)) {
       form.setValue("paymentStatus", config.defaultPaymentStatus);
     }
   }, [currentStatus, form]);
