@@ -8,9 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
-import { REFUND_STATUSES } from "@/constants/refund.constant";
 import type { RefundType } from "@/types/refund.type";
 import { refundSchema, updateRefundSchema } from "@/validations/refund.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,12 +34,10 @@ export function RefundForm({
       orderCode: refund.order?.code || "",
       amount: refund.amount,
       reason: refund.reason || "",
-      status: refund.status,
     } : {
       orderCode: "",
       amount: undefined,
       reason: "",
-      status: "PENDING",
     },
   });
 
@@ -55,7 +51,6 @@ export function RefundForm({
     }
     
     formData.append("reason", values.reason);
-    formData.append("status", values.status || "PENDING");
 
     submit(formData, {
       method: isUpdate ? "PATCH" : "POST",
@@ -104,31 +99,6 @@ export function RefundForm({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="status"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Status</FormLabel>
-                <FormControl>
-                  <div className="flex flex-wrap gap-2">
-                    {REFUND_STATUSES.map((stat) => (
-                      <TabButton
-                        key={stat.key}
-                        text={stat.text}
-                        isSelected={field.value === stat.key}
-                        onClick={() => {
-                           field.onChange(stat.key);
-                        }}
-                        disabled={isSubmitting}
-                      />
-                    ))}
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
 
         <FormField

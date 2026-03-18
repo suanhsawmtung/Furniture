@@ -17,22 +17,15 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const refundId = Number(id);
 
   const reason = formData.get("reason") as string;
-  const status = formData.get("status") as string;
 
   if (!reason || reason.trim().length === 0) {
     toast.error("Reason is required");
     return { error: "Reason is required" };
   }
 
-  if (!status) {
-    toast.error("Status is required");
-    return { error: "Status is required" };
-  }
-
   try {
     const response = await updateRefund(refundId, {
       reason,
-      status: status as any,
     });
 
     // Invalidate queries

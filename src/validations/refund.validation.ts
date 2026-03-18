@@ -8,7 +8,6 @@ export const refundSchema = z.object({
     .trim()
     .min(1, "Reason is required")
     .max(500, "Reason must be 500 characters or less"),
-  status: z.enum(["PENDING", "SUCCESS", "FAILED", "VOIDED"]).optional(),
 });
 
 export const updateRefundSchema = z.object({
@@ -17,7 +16,6 @@ export const updateRefundSchema = z.object({
     .trim()
     .min(1, "Reason is required")
     .max(500, "Reason must be 500 characters or less"),
-  status: z.enum(["PENDING", "SUCCESS", "FAILED", "VOIDED"]),
 });
 
 export const RefundFilterFormSchema = z.object({

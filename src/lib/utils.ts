@@ -1,7 +1,8 @@
 import type { OrderPaymentStatus, OrderSource, OrderStatus } from "@/types/order.type";
-import type { RefundStatus } from "@/types/refund.type";
+import type { PaymentStatus } from "@/types/payment.type";
 import type { PostStatus } from "@/types/post.type";
 import type { Concentration, Gender } from "@/types/product.type";
+import type { RefundStatus } from "@/types/refund.type";
 import type { Role, Status } from "@/types/user.type";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -102,6 +103,13 @@ export function isRefundStatus(
   return value === "PENDING" || value === "SUCCESS" || value === "FAILED" || value === "VOIDED";
 }
 
+// Type guard to validate if a string is a valid PaymentStatus
+export function isPaymentStatus(
+  value: string | null | undefined,
+): value is PaymentStatus {
+  return value === "PENDING" || value === "SUCCESS" || value === "FAILED" || value === "VOIDED";
+}
+
 // Type guard to validate if a string is a valid Status
 export function isStatus(value: string | null | undefined): value is Status {
   return value === "ACTIVE" || value === "INACTIVE" || value === "FREEZE";
@@ -160,17 +168,19 @@ export function getOrderStatusVariant(status: OrderStatus) {
 }
 
 // Get payment status variant for badge
-export function getPaymentStatusVariant(status: OrderPaymentStatus) {
+export function getPaymentStatusVariant(status: OrderPaymentStatus | PaymentStatus) {
   switch (status) {
     case "UNPAID":
       return "default";
     case "PENDING":
       return "secondary";
     case "PAID":
+    case "SUCCESS":
       return "outline";
     case "FAILED":
     case "REFUNDED":
     case "PARTIALLY_REFUNDED":
+    case "VOIDED":
       return "destructive";
     default:
       return "secondary";
@@ -266,7 +276,7 @@ export function isOrderStatus(
 }
 
 // Type guard to validate if a string is a valid PaymentStatus
-export function isPaymentStatus(
+export function isOrderPaymentStatus(
   value: string | null | undefined,
 ): value is OrderPaymentStatus {
   return (
@@ -293,5 +303,3 @@ export function parseBoolean(value: string | null) {
 
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
-
-

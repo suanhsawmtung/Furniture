@@ -32,8 +32,7 @@ export async function action({ request }: ActionFunctionArgs) {
       orderCode: orderCode,
       amount: Number(amount),
       reason: reason,
-      status: (formData.get("status") as any) || "PENDING",
-    } as any);
+    });
 
     await queryClient.invalidateQueries({
       queryKey: refundQueryKeys.all,

@@ -125,6 +125,15 @@ import { loader as adminRefundsLoader } from "@/pages/admin/refunds/loader";
 import AdminRefundUpdatePage from "@/pages/admin/refunds/update";
 import { action as adminUpdateRefundAction } from "@/pages/admin/refunds/update/action";
 import { loader as adminEditRefundLoader } from "@/pages/admin/refunds/update/loader";
+import AdminPaymentsPage from "./pages/admin/payments";
+import AdminPaymentCreatePage from "./pages/admin/payments/create";
+import { action as adminPaymentCreateAction } from "./pages/admin/payments/create/action";
+import AdminPaymentDetailPage from "./pages/admin/payments/detail";
+import { loader as adminPaymentDetailLoader } from "./pages/admin/payments/detail/loader";
+import { loader as adminPaymentsLoader } from "./pages/admin/payments/loader";
+import AdminPaymentUpdatePage from "./pages/admin/payments/update";
+import { action as adminUpdatePaymentAction } from "./pages/admin/payments/update/action";
+import { loader as adminEditPaymentLoader } from "./pages/admin/payments/update/loader";
 
 export const router = createBrowserRouter([
   {
@@ -509,6 +518,32 @@ export const router = createBrowserRouter([
             Component: AdminRefundUpdatePage,
             action: adminUpdateRefundAction,
             loader: adminEditRefundLoader,
+          },
+        ],
+      },
+      {
+        path: "payments",
+        children: [
+          {
+            index: true,
+            Component: AdminPaymentsPage,
+            loader: adminPaymentsLoader,
+          },
+          {
+            path: "create",
+            Component: AdminPaymentCreatePage,
+            action: adminPaymentCreateAction,
+          },
+          {
+            path: ":id",
+            Component: AdminPaymentDetailPage,
+            loader: adminPaymentDetailLoader,
+          },
+          {
+            path: ":id/edit",
+            Component: AdminPaymentUpdatePage,
+            action: adminUpdatePaymentAction,
+            loader: adminEditPaymentLoader,
           },
         ],
       },
