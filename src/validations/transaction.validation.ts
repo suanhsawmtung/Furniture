@@ -4,6 +4,7 @@ export const transactionTypeEnum = [
   "PAYMENT",
   "REFUND",
   "ADJUSTMENT",
+  "REVERSAL",
   "EXPENSE",
   "WITHDRAWAL",
   "OTHER",

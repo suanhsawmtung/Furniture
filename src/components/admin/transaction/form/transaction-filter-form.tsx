@@ -20,6 +20,7 @@ const TRANSACTION_TYPES = [
   { key: "PAYMENT", text: "Payment" },
   { key: "REFUND", text: "Refund" },
   { key: "ADJUSTMENT", text: "Adjustment" },
+  { key: "REVERSAL", text: "Reversal" },
   { key: "EXPENSE", text: "Expense" },
   { key: "WITHDRAWAL", text: "Withdrawal" },
   { key: "OTHER", text: "Other" },

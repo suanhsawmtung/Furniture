@@ -5,7 +5,7 @@ import type {
 } from "@/validations/transaction.validation";
 import type z from "zod";
 
-export type TransactionTypeEnum = "PAYMENT" | "REFUND" | "ADJUSTMENT" | "EXPENSE" | "WITHDRAWAL" | "OTHER";
+export type TransactionTypeEnum = "PAYMENT" | "REFUND" | "ADJUSTMENT" | "REVERSAL" | "EXPENSE" | "WITHDRAWAL" | "OTHER";
 export type TransactionDirection = "IN" | "OUT";
 
 export type TransactionType = {
