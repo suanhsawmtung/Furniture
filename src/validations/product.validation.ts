@@ -44,11 +44,6 @@ export const productVariantSchema = z.object({
     .min(0, "Price must be a positive number")
     .refine((value) => Number.isFinite(value), "Price must be a valid number"),
   discount: z.number().min(0, "Discount must be a positive number").optional(),
-  stock: z
-    .number()
-    .int("Stock must be a valid number")
-    .min(0, "Stock must be a non-negative integer")
-    .optional(),
   isPrimary: z.boolean().optional(),
   isActive: z.boolean().optional(),
   images: z

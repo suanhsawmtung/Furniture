@@ -71,7 +71,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
   const price = selectedVariant?.discount && Number(selectedVariant.discount) > 0 
     ? Number(selectedVariant.discount) 
     : selectedVariant?.price || 0;
-  const maxQuantity = selectedVariant?.stock || 1;
+  const maxQuantity = (selectedVariant?.stock || 0) - (selectedVariant?.reserved || 0);
   const itemTotal = price * quantity;
 
   const reset = () => {
@@ -94,7 +94,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
       size: selectedVariant.size,
       productName: variantsData.name,
       brandName: variantsData.brand.name,
-      stock: selectedVariant.stock,
+      stock: maxQuantity,
       originalPrice: selectedVariant.price,
     });
 
@@ -146,7 +146,7 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
           <SearchableSelect 
             items={variantsData?.variants.map(v => ({
               value: String(v.id),
-              label: `${v.sku} - ${v.size}ml (${formatPrice(v.discount && Number(v.discount) > 0 ? Number(v.discount) : v.price)})`
+              label: `${v.size}ml ${v.source === "DECANT" ? "(Decant)" : ""}`
             })) || []}
             paramKey="variant"
             placeholder="Select variant..."

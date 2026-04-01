@@ -53,15 +53,3 @@ export async function updateOrder(code: string, params: FormData): Promise<{
   const response = await api.patch(`/admin/orders/${code}`, params);
   return response.data;
 }
-
-export async function deleteOrder({
-  code,
-}: {
-  code: string;
-}): Promise<{
-  success: boolean;
-  message: string;
-}> {
-  const response = await api.delete(`/admin/orders/${code}`);
-  return response.data;
-}

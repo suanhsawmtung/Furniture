@@ -80,7 +80,6 @@ export function ProductVariantForm({
       source: variant?.source || "ORIGINAL",
       price: variant?.price ? Number(variant.price) : undefined,
       discount: variant?.discount ? Number(variant.discount) : undefined,
-      stock: variant?.stock !== undefined ? Number(variant.stock) : undefined,
       isPrimary: variant?.isPrimary || false,
       isActive: variant?.isActive ?? true,
       images: initialImageSlots.filter((slot): slot is string => !!slot),
@@ -170,9 +169,6 @@ export function ProductVariantForm({
     formData.append("price", String(values.price));
     if (typeof values.discount === "number") {
       formData.append("discount", String(values.discount));
-    }
-    if (typeof values.stock === "number") {
-      formData.append("stock", String(values.stock));
     }
     if (typeof values.isPrimary === "boolean") {
       formData.append("isPrimary", String(values.isPrimary));
@@ -454,30 +450,6 @@ export function ProductVariantForm({
                       placeholder="e.g. 10"
                       min={0}
                       step="0.01"
-                      onWheel={(event) => event.currentTarget.blur()}
-                      value={field.value ?? ""}
-                      onChange={(event) =>
-                        field.onChange(toOptionalNumber(event.target.value))
-                      }
-                      disabled={isSubmitting}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="stock"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Stock</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="e.g. 20"
-                      min={0}
                       onWheel={(event) => event.currentTarget.blur()}
                       value={field.value ?? ""}
                       onChange={(event) =>

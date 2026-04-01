@@ -79,6 +79,8 @@ export interface OrderItem {
     price: number;
     discount: number;
     stock: number;
+    reserved: number;
+    totalCost: number;
     productId: number;
     source: VariantSource;
     isPrimary: boolean;

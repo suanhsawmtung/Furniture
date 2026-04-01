@@ -98,6 +98,8 @@ export interface ProductVariantType {
   price: number;
   discount: number;
   stock: number;
+  reserved: number;
+  totalCost: number;
   isPrimary: boolean;
   isActive: boolean;
   images: ProductVariantImage[];
@@ -114,6 +116,8 @@ export interface ProductVariantSummaryType {
   price: number;
   discount: number;
   stock: number;
+  reserved: number;
+  totalCost: number;
   isPrimary: boolean;
   isActive: boolean;
   inventories: ProductVariantInventory[];
@@ -129,6 +133,8 @@ export interface ProductVariantDetailType {
   price: number;
   discount: number;
   stock: number;
+  reserved: number;
+  totalCost: number;
   isPrimary: boolean;
   isActive: boolean;
   images: ProductVariantImage[];

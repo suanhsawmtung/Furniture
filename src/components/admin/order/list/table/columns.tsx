@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { formatDateTime, formatPrice, getOrderSourceVariant, getOrderStatusVariant, getPaymentStatusVariant } from "@/lib/utils";
 import type { OrderType } from "@/types/order.type";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowRightIcon, PencilLineIcon, Trash2Icon } from "lucide-react";
+import { ArrowRightIcon, PencilLineIcon } from "lucide-react";
 import { Link } from "react-router";
-import { DeleteOrderDialog } from "../../actions/delete-order-dialog";
 
 // Actions cell component
 const ActionsCell = ({ order }: { order: OrderType }) => {
@@ -36,17 +35,6 @@ const ActionsCell = ({ order }: { order: OrderType }) => {
             <PencilLineIcon size={16} />
           </Link>
         </Button>
-
-      <DeleteOrderDialog order={order}>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 w-7 rounded-sm border-none bg-red-50 p-1 text-red-400 hover:bg-red-50 hover:text-red-400"
-          asChild
-        >
-          <Trash2Icon size={16} />
-        </Button>
-      </DeleteOrderDialog>
     </div>
   );
 };

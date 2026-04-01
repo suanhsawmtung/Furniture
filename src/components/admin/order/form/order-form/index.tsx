@@ -109,7 +109,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
             size: item.productVariant.size,
             productName: item.productVariant.product.name,
             brandName: item.productVariant.product.brand.name,
-            stock: item.productVariant.stock,
+            stock: (item.productVariant.stock - item.productVariant.reserved),
             originalPrice: item.productVariant.price,
           };
         }

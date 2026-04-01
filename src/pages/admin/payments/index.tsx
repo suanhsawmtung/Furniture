@@ -29,8 +29,6 @@ export default function AdminPaymentsPage() {
     method,
   });
 
-  console.log(data);
-
   return (
     <section className="w-full">
       <AdminHeaderSection title="Payments" />
