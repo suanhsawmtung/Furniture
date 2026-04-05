@@ -26,7 +26,7 @@ import { useAuthStore } from "@/stores/auth.store";
 import type { PostFormValues, PostType } from "@/types/post.type";
 import { postSchema } from "@/validations/post.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Image as ImageIcon, Loader2 } from "lucide-react";
+import { Camera, Image as ImageIcon, Loader2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useNavigation, useSubmit } from "react-router";
@@ -144,7 +144,7 @@ export function PostForm({
                     <div
                       onClick={handleImageClick}
                       className={cn(
-                        "bg-muted/10 flex h-auto w-full flex-col items-center justify-center gap-3 rounded-lg",
+                        "bg-muted/10 flex h-auto w-full flex-col items-center justify-center gap-3 rounded-lg group transition-colors hover:border-primary/50",
                         imageUrl
                           ? "cursor-pointer"
                           : "border-muted-foreground/25 cursor-pointer border-2 border-dashed p-8",
@@ -165,6 +165,9 @@ export function PostForm({
                             alt="Preview"
                             className="h-auto w-full rounded-lg object-cover"
                           />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                            <Camera className="h-8 w-8 text-white" />
+                          </div>
                         </div>
                       ) : (
                         <div className="flex min-h-[182px] flex-col items-center justify-center gap-3">

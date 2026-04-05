@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 
 import { NavItem } from "@/components/layouts/sidebar/nav-item";
 import { Button } from "@/components/ui/button";
+import { baseImageUrl } from "@/config/env";
 import { formatUserDisplayName, getUserInitials } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import {
@@ -207,7 +208,7 @@ export function Sidebar({ onClose }: SidebarProps) {
           <div className="bg-muted flex items-center gap-3 rounded-lg px-3 py-2">
             {authUser.image ? (
               <img
-                src={authUser.image as string}
+                src={baseImageUrl + "user/" + authUser.image as string}
                 alt={formatUserDisplayName(authUser)}
                 className="h-8 w-8 rounded-full object-cover"
               />

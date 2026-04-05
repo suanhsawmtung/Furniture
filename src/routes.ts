@@ -49,6 +49,7 @@ import AdminProductVariantEditPage from "@/pages/admin/products/variants/update"
 import { action as adminUpdateProductVariantAction } from "@/pages/admin/products/variants/update/action";
 import { loader as adminEditProductVariantLoader } from "@/pages/admin/products/variants/update/loader";
 import AdminSettingsPage from "@/pages/admin/settings";
+import { loader as adminSettingsLoader } from "@/pages/admin/settings/loader";
 import AdminUsersPage from "@/pages/admin/users";
 import AdminUserCreateDialog from "@/pages/admin/users/create";
 import { action as adminCreateUserAction } from "@/pages/admin/users/create/action";
@@ -604,6 +605,7 @@ export const router = createBrowserRouter([
       {
         path: "settings",
         Component: AdminSettingsPage,
+        loader: adminSettingsLoader,
       },
     ],
   },

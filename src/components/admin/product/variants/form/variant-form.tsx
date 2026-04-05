@@ -18,7 +18,7 @@ import {
   type ProductVariantFormValues,
 } from "@/validations/product.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Image as ImageIcon, Loader2, X } from "lucide-react";
+import { Camera, Image as ImageIcon, Loader2, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useNavigation, useSubmit } from "react-router";
@@ -235,7 +235,7 @@ export function ProductVariantForm({
                               index === 0 ? "border-primary/60" : "",
                               isDisabled
                                 ? "cursor-not-allowed opacity-50"
-                                : "cursor-pointer",
+                                : "cursor-pointer group transition-colors hover:border-primary/50",
                             )}
                           >
                             <input
@@ -276,6 +276,11 @@ export function ProductVariantForm({
                                   loading="lazy"
                                   decoding="async"
                                 />
+                                {!isDisabled && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 rounded-md">
+                                    <Camera className="h-6 w-6 text-white" />
+                                  </div>
+                                )}
                               </>
                             ) : (
                               <>
