@@ -45,15 +45,6 @@ const ActionsCell = ({ transaction }: { transaction: TransactionType }) => {
 
 export const columns: ColumnDef<TransactionType>[] = [
   {
-    accessorKey: "createdBy",
-    header: "Created By",
-    cell: ({ row }) => (
-      <div className={cn("text-sm", !row.original.createdBy?.username && "ml-4")}>
-         {row.original.createdBy?.username || "-"}
-      </div>
-    )
-  },
-  {
     accessorKey: "amount",
     header: "Amount",
     cell: ({ row }) => {
@@ -73,6 +64,15 @@ export const columns: ColumnDef<TransactionType>[] = [
       const type = row.original.type;
       return <Badge variant={getTransactionTypeVariant(type)}>{type}</Badge>;
     },
+  },
+  {
+    accessorKey: "createdBy",
+    header: "Created By",
+    cell: ({ row }) => (
+      <div className={cn("text-sm", !row.original.createdBy?.username && "ml-4")}>
+         {row.original.createdBy?.username || "-"}
+      </div>
+    )
   },
   {
     accessorKey: "createdAt",
