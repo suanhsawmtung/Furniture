@@ -7,7 +7,6 @@ import { immer } from "zustand/middleware/immer";
 export type AuthStatus =
   | "sign-up"
   | "verify-otp"
-  | "confirm-password"
   | "forgot-password"
   | "reset-password";
 

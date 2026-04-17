@@ -1,3 +1,4 @@
+import { PasswordInput } from "@/components/shared/password-input";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -87,6 +88,7 @@ const SignInPage = () => {
                           <Input
                             type="email"
                             placeholder="Enter your email"
+                            disabled={isSubmitting}
                             {...field}
                           />
                         </FormControl>
@@ -103,16 +105,16 @@ const SignInPage = () => {
                           <FormLabel>Password</FormLabel>
                           <Link
                             to="/forgot-password"
-                            className="ml-auto text-sm underline-offset-4 hover:underline"
+                            className="ml-auto text-xs underline-offset-4 hover:underline"
                           >
                             Forgot your password?
                           </Link>
                         </div>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Enter your password"
-                            {...field}
+                          <PasswordInput 
+                            field={field} 
+                            placeholder="Enter your password" 
+                            disabled={isSubmitting}
                           />
                         </FormControl>
                         <FormMessage />

@@ -46,26 +46,9 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error: any) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;
-      const errorCode = errorData?.error;
 
-      // Handle specific error codes - redirect to forgot-password
-      if (
-        errorCode === "Error_UserNotFound" ||
-        errorCode === "Error_OtpNotExist" ||
-        errorCode === "Error_InvalidToken" ||
-        errorCode === "Error_ExpiredOtp" ||
-        errorCode === "Error_OtpErrorCountLimitExceeded"
-      ) {
-        toast.error(errorData?.message || "Password reset failed");
-        return redirect("/forgot-password");
-      }
-
-      // Return error for display
-      return {
-        success: false,
-        error: errorCode,
-        message: errorData?.message || "Password reset failed",
-      };
+      toast.error(errorData?.message || "Password reset failed");
+      return redirect("/forgot-password");
     }
     throw error;
   }

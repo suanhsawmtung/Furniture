@@ -34,7 +34,7 @@ export async function fetchUsers(options: {
 
   // Backend returns: { success: true, data: { users, currentPage, totalPages, pageSize }, message: null }
   return {
-    users: response.data?.data?.users || [],
+    items: response.data?.data?.items || [],
     currentPage: response.data?.data?.currentPage || 0,
     totalPages: response.data?.data?.totalPages || 0,
     pageSize: response.data?.data?.pageSize || 10,
@@ -86,7 +86,7 @@ export async function fetchAllUsers(
   });
 
   return {
-    users: response.data?.data?.users || [],
+    items: response.data?.data?.items || [],
     nextCursor: response.data?.data?.nextCursor || null,
   };
 }

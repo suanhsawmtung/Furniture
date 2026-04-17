@@ -7,6 +7,9 @@ export type Role = "USER" | "ADMIN" | "AUTHOR";
 // Status enum from backend
 export type Status = "ACTIVE" | "INACTIVE" | "FREEZE";
 
+// AuthProvider enum from backend
+export type AuthProvider = "EMAIL" | "GOOGLE";
+
 export interface UserType {
   id: number;
   email: string;
@@ -16,14 +19,15 @@ export interface UserType {
   phone: string | null;
   role: Role;
   status: Status;
-  lastLogin: Date | null;
+  emailVerifiedAt: string | Date | null;
+  provider: AuthProvider;
   image: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 }
 
 export interface UserListResult {
-  users: UserType[];
+  items: UserType[];
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -37,7 +41,7 @@ export interface CommonUserType {
 }
 
 export interface CommonUserResult {
-  users: CommonUserType[];
+  items: CommonUserType[];
   nextCursor: number | null;
 }
 

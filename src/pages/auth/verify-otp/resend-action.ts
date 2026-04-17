@@ -20,6 +20,7 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const response = await api.post("/auth/resend-otp", {
       email,
+      type: authFlow.flow === "sign-up" ? "VERIFY_EMAIL" : "RESET_PASSWORD" ,
     });
 
     // On success, update authFlow with new token

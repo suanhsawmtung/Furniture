@@ -1,3 +1,4 @@
+import { PasswordInput } from "@/components/shared/password-input";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,7 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/stores/auth.store";
 import type { AuthActionResponse } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -78,8 +78,8 @@ const ResetPasswordPage = () => {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="grid gap-6">
-                <div className="grid gap-6">
+              <div className="space-y-6">
+                <div className="space-y-6">
                   <FormField
                     control={form.control}
                     name="password"
@@ -87,10 +87,10 @@ const ResetPasswordPage = () => {
                       <FormItem>
                         <FormLabel>New Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Enter your new password"
-                            {...field}
+                          <PasswordInput 
+                            field={field} 
+                            disabled={isSubmitting}
+                            placeholder="Enter your new password" 
                           />
                         </FormControl>
                         <FormMessage />
@@ -104,10 +104,10 @@ const ResetPasswordPage = () => {
                       <FormItem>
                         <FormLabel>Confirm New Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Confirm your new password"
-                            {...field}
+                          <PasswordInput 
+                              field={field} 
+                              disabled={isSubmitting}
+                              placeholder="Confirm your new password" 
                           />
                         </FormControl>
                         <FormMessage />

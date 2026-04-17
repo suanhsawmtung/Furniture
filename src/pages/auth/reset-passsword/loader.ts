@@ -41,9 +41,6 @@ export async function loader() {
     if (authFlow.status === "verify-otp") {
       return redirect("/verify-otp");
     }
-    if (authFlow.status === "confirm-password") {
-      return redirect("/confirm-password");
-    }
   }
 
   // Default: redirect to forgot-password

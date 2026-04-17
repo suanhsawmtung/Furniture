@@ -119,6 +119,7 @@ const VerifyOtpPage = () => {
                           maxLength={6}
                           value={field.value}
                           onChange={field.onChange}
+                          disabled={isSubmitting}
                         >
                           <InputOTPGroup className="flex w-full items-center justify-between">
                             <InputOTPSlot

@@ -14,6 +14,8 @@ export async function loader() {
   // If authUser doesn't exist, check authentication with API
   const { user, isSuccess } = await checkAuth();
 
+  console.log(user, "home")
+
   // If authenticated, sync with store
   if (isSuccess && user) {
     setAuthUser(user);

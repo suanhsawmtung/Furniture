@@ -1,5 +1,4 @@
 import AboutPage from "@/pages/about";
-import ConfirmPasswordPage from "@/pages/auth/confirm-password";
 import ForgotPasswordPage from "@/pages/auth/forgot-password";
 import AuthLayout from "@/pages/auth/layout";
 import ResetPasswordPage from "@/pages/auth/reset-passsword";
@@ -60,8 +59,6 @@ import { loader as adminUsersLoader } from "@/pages/admin/users/loader";
 import AdminUserEditDialog from "@/pages/admin/users/update";
 import { action as adminUpdateUserAction } from "@/pages/admin/users/update/action";
 import { loader as adminEditUserLoader } from "@/pages/admin/users/update/loader";
-import { action as confirmPasswordAction } from "@/pages/auth/confirm-password/action";
-import { loader as confirmPasswordLoader } from "@/pages/auth/confirm-password/loader";
 import { action as forgotPasswordAction } from "@/pages/auth/forgot-password/action";
 import { loader as forgotPasswordLoader } from "@/pages/auth/forgot-password/loader";
 import { loader as authLoader } from "@/pages/auth/loader";
@@ -228,12 +225,6 @@ export const router = createBrowserRouter([
       {
         path: "/verify-password-otp/resend",
         action: resendOtpAction,
-      },
-      {
-        path: "/confirm-password",
-        Component: ConfirmPasswordPage,
-        loader: confirmPasswordLoader,
-        action: confirmPasswordAction,
       },
       {
         path: "/forgot-password",

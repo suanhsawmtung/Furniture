@@ -45,8 +45,6 @@ export const AddOrderItemForm = ({ onAdd }: AddOrderItemFormProps) => {
     search: productSearch,
   });
 
-  console.log(productsData)
-
   useEffect(() => {
     const getVariants = async () => {
       if (!selectedProductSlug) {

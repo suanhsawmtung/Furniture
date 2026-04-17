@@ -1,3 +1,4 @@
+import { PasswordInput } from "@/components/shared/password-input";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,6 +23,8 @@ import { Link, useActionData, useNavigation, useSubmit } from "react-router";
 import z from "zod";
 
 const signUpSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
   email: z
     .string()
     .trim()
@@ -31,7 +34,13 @@ const signUpSchema = z.object({
         .email({ message: "Invalid email address!" })
         .transform((val) => val.toLowerCase()),
     ),
-});
+  password: z.string().min(1, "Password is required"),
+  confirmPassword: z.string().min(1, "Confirm password is required"),
+})
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
@@ -45,6 +54,8 @@ const SignUpPage = () => {
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -56,7 +67,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-6 md:w-1/2 lg:w-2/3 xl:w-1/2">
+    <div className="flex w-full flex-col gap-6 md:w-1/2 lg:w-2/3 xl:w-3/5">
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Sign Up</CardTitle>
@@ -67,8 +78,48 @@ const SignUpPage = () => {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="grid gap-6">
-                <div className="grid gap-6">
+              <div className="space-y-6">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-2">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter your first name"
+                              disabled={isSubmitting}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              placeholder="Enter your last name"
+                              disabled={isSubmitting}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
                   <FormField
                     control={form.control}
                     name="email"
@@ -79,6 +130,7 @@ const SignUpPage = () => {
                           <Input
                             type="email"
                             placeholder="Enter your email"
+                            disabled={isSubmitting}
                             {...field}
                           />
                         </FormControl>
@@ -90,6 +142,42 @@ const SignUpPage = () => {
                   {actionData && actionData.message && (
                     <p className="text-xs text-red-400">{actionData.message}</p>
                   )}
+
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <PasswordInput 
+                            field={field} 
+                            placeholder="Enter your password" 
+                            disabled={isSubmitting}
+                          />  
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl>
+                          <PasswordInput 
+                            field={field} 
+                            placeholder="Confirm your password" 
+                            disabled={isSubmitting}
+                          />  
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
                   <div className="flex flex-col gap-2">
                     <Button

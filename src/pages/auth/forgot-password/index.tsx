@@ -80,6 +80,7 @@ const ForgotPasswordPage = () => {
                           <Input
                             type="email"
                             placeholder="Enter your email"
+                            disabled={isSubmitting}
                             {...field}
                           />
                         </FormControl>
@@ -98,7 +99,7 @@ const ForgotPasswordPage = () => {
                       className="w-full cursor-pointer"
                       disabled={isSubmitting}
                     >
-                      {isSubmitting ? "Sending..." : "Send Reset Link"}
+                      {isSubmitting ? "Sending..." : "Send Otp"}
                     </Button>
                   </div>
                 </div>

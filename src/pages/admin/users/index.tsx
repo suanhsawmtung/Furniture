@@ -59,7 +59,7 @@ const AdminUsersPage = () => {
 
         {data && (
           <UsersList
-            users={data.users}
+            users={data.items}
             total={data.totalPages}
             page={data.currentPage}
             size={data.pageSize}

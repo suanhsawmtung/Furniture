@@ -7,13 +7,18 @@ import { toast } from "sonner";
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const firstName = formData.get("firstName") as string;
+  const lastName = formData.get("lastName") as string;
 
   try {
     const response = await api.post("/auth/register", {
       email,
+      password,
+      firstName,
+      lastName,
     });
 
-    // Update auth flow in store when successful
     if (response.data?.success && response.data?.data) {
       const { setAuthFlow } = useAuthStore.getState();
       setAuthFlow({
@@ -23,14 +28,12 @@ export async function action({ request }: ActionFunctionArgs) {
         flow: "sign-up",
       });
 
-      // Show success toast
       toast.success(
         response.data?.message ||
           "Sign up successful. Please verify your email.",
       );
     }
 
-    // Redirect to verify-otp page
     return redirect("/verify-otp");
   } catch (error: any) {
     if (error instanceof AxiosError) {

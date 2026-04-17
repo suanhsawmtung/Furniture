@@ -1,6 +1,7 @@
 import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
-import { PasswordForm } from "@/components/shared/setting/password-form";
+import { ChangePasswordForm } from "@/components/shared/setting/change-password-form";
 import { ProfileForm } from "@/components/shared/setting/profile-form";
+import { SetPasswordForm } from "@/components/shared/setting/set-password-form";
 import {
   Card,
   CardContent,
@@ -36,14 +37,24 @@ const AdminSettingsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Change Password</CardTitle>
+            <CardTitle>
+              { 
+                user?.hasPassword 
+                  ? "Change Password" 
+                  : "Set Password" 
+              }
+            </CardTitle>
             <CardDescription>
               Ensure your account is using a long, random password to stay
               secure.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <PasswordForm />
+            { 
+              user?.hasPassword 
+                ? <ChangePasswordForm />
+                : <SetPasswordForm /> 
+            }
           </CardContent>
         </Card>
       </div>

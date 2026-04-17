@@ -32,30 +32,30 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // On success, update authFlow status, email, and token
     if (response.data?.success && response.data?.data) {
-      const { updateAuthFlow } = useAuthStore.getState();
+      const { clearAuth, updateAuthFlow } = useAuthStore.getState();
 
       if (flow === "sign-up") {
         // Move to confirm-password step and update email/token
-        updateAuthFlow({
-          status: "confirm-password",
-          email: response.data.data.email,
-          token: response.data.data.token,
-        });
+        clearAuth();
         // Show success toast
         toast.success(
-          response.data?.message || "OTP is successfully verified.",
+          // response.data?.message || "OTP is successfully verified.***",
+          "OTP is successfully verified.***"
         );
-        return redirect("/confirm-password");
+        return redirect("/");
       } else {
         // Move to reset-password step and update email/token
         updateAuthFlow({
-          status: "reset-password",
-          email: response.data.data.email,
+          email,
           token: response.data.data.token,
+          status: "reset-password",
+          flow: "forgot-password",
         });
+
         // Show success toast
         toast.success(
-          response.data?.message || "OTP is successfully verified.",
+          // response.data?.message || "OTP is successfully verified...",
+          "OTP is successfully verified..."
         );
         return redirect("/reset-password");
       }
@@ -65,36 +65,12 @@ export async function action({ request }: ActionFunctionArgs) {
   } catch (error: any) {
     if (error instanceof AxiosError) {
       const errorData = error.response?.data;
-      const errorCode = errorData?.error;
 
-      // Handle specific error codes
-      if (
-        errorCode === "Error_OtpNotExist" ||
-        errorCode === "Error_InvalidToken"
-      ) {
-        // Redirect to previous page based on flow
-        const redirectPath =
-          flow === "sign-up" ? "/sign-up" : "/forgot-password";
-        toast.error(errorData?.message || "Verification failed");
-        return redirect(redirectPath);
-      }
-
-      if (errorCode === "Error_UserAlreadyExists" && flow === "sign-up") {
-        toast.error(errorData?.message || "User already exists");
-        return redirect("/sign-up");
-      }
-
-      if (errorCode === "Error_UserNotFound" && flow === "forgot-password") {
-        toast.error(errorData?.message || "User not found");
-        return redirect("/forgot-password");
-      }
-
-      // Return error for display
-      return {
-        success: false,
-        error: errorCode,
-        message: errorData?.message || "Verification failed",
-      };
+      // Redirect to previous page based on flow
+      const redirectPath =
+        flow === "sign-up" ? "/sign-up" : "/forgot-password";
+      toast.error(errorData?.message || "Verification failed");
+      return redirect(redirectPath);
     }
     throw error;
   }
