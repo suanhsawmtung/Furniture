@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
-import { baseImageUrl } from "@/config/env";
-import { cn } from "@/lib/utils";
+import { cn, formatImagePath } from "@/lib/utils";
 import type { ProductVariantType, VariantSource } from "@/types/product.type";
 import {
   productVariantSchema,
@@ -91,7 +90,7 @@ export function ProductVariantForm({
       imageSlots.map((slot) => {
         if (!slot) return null;
         if (slot instanceof File) return URL.createObjectURL(slot);
-        return baseImageUrl + "product/" + slot;
+        return formatImagePath(slot, "product");
       }),
     [imageSlots],
   );
@@ -272,7 +271,7 @@ export function ProductVariantForm({
                                 <img
                                   src={previewUrl}
                                   alt={`Variant image ${index + 1}`}
-                                  className="h-full w-auto rounded-md"
+                                  className="h-full w-auto rounded-md object-cover"
                                   loading="lazy"
                                   decoding="async"
                                 />

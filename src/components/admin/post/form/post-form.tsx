@@ -18,9 +18,8 @@ import {
 } from "@/components/ui/select";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
-import { baseImageUrl } from "@/config/env";
 import { POST_STATUSES } from "@/constants/post.constant";
-import { cn } from "@/lib/utils";
+import { cn, formatImagePath } from "@/lib/utils";
 import { useGetAllCategories } from "@/services/category/queries/useGetAllCategories";
 import { useAuthStore } from "@/stores/auth.store";
 import type { PostFormValues, PostType } from "@/types/post.type";
@@ -93,7 +92,7 @@ export function PostForm({
     }
     // If in edit mode and no new file, show existing post image
     if (isEditMode && post?.image) {
-      return baseImageUrl + "post/" + post.image;
+      return formatImagePath(post.image, "post");
     }
     return null;
   }, [imageFile, isEditMode, post?.image]);

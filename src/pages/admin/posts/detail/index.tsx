@@ -2,8 +2,7 @@ import AdminHeaderSection from "@/components/admin/shared/admin-header-section";
 import { BackButton } from "@/components/admin/shared/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { baseImageUrl } from "@/config/env";
-import { getPostStatusVariant } from "@/lib/utils";
+import { formatImagePath, getPostStatusVariant } from "@/lib/utils";
 import { useGetPost } from "@/services/post/queries/useGetPost";
 import type { PostStatus } from "@/types/post.type";
 import { useParams } from "react-router";
@@ -51,7 +50,7 @@ const AdminPostDetailPage = () => {
               {/* Image section */}
               <div className="w-full lg:w-1/2">
                 <img
-                  src={baseImageUrl + "post/" + post.image}
+                  src={formatImagePath(post.image, "post")}
                   alt={post.title}
                   className="h-auto w-full rounded-lg object-cover"
                   loading="lazy"

@@ -8,8 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { TabButton } from "@/components/ui/tab-button";
-import { baseImageUrl } from "@/config/env";
-import { formatPrice } from "@/lib/utils";
+import { formatImagePath, formatPrice } from "@/lib/utils";
 import type { ProductDetailType } from "@/types/product.type";
 import { CircleChevronDown, CircleChevronUp } from "lucide-react";
 import { useRef, useState } from "react";
@@ -207,9 +206,9 @@ const ProductVariantsPanel = ({ product }: ProductVariantsPanelProps) => {
                                     </span>
                                   )}
                                   <img
-                                    src={baseImageUrl + "product/" + image.path}
+                                    src={formatImagePath(image.path, "product")}
                                     alt={variant.sku}
-                                    className="h-24 w-auto rounded-md"
+                                    className="h-24 w-auto rounded-md object-cover"
                                     loading="lazy"
                                     decoding="async"
                                   />

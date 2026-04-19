@@ -10,8 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { TabButton } from "@/components/ui/tab-button";
 import { Textarea } from "@/components/ui/textarea";
-import { baseImageUrl } from "@/config/env";
-import { formatPrice } from "@/lib/utils";
+import { formatImagePath, formatPrice } from "@/lib/utils";
 import type { OrderDetailType, OrderStatus } from "@/types/order.type";
 import type { OrderFormValues } from "@/validations/order.validation";
 import { orderFormSchema } from "@/validations/order.validation";
@@ -121,7 +120,7 @@ export const OrderForm = ({ order }: { order?: OrderDetailType }) => {
   const imageUrl = useMemo(() => {
     // If in edit mode, show existing order image
     if (isEditMode && order?.image) {
-      return baseImageUrl + "order/" + order.image;
+      return formatImagePath(order.image, "order");
     }
     return null;
   }, [isEditMode, order?.image]);

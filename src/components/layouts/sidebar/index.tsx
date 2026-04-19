@@ -3,8 +3,7 @@ import React, { useEffect } from "react";
 import { NavItem } from "@/components/layouts/sidebar/nav-item";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { baseImageUrl } from "@/config/env";
-import { formatUserDisplayName, getUserInitials } from "@/lib/utils";
+import { formatImagePath, formatUserDisplayName, getUserInitials } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth.store";
 import {
   ArrowLeftRight,
@@ -210,7 +209,7 @@ export function Sidebar({ onClose }: SidebarProps) {
             <Avatar>
               {authUser.image ? (
                 <AvatarImage
-                  src={baseImageUrl + "user/" + authUser.image as string}
+                  src={formatImagePath(authUser.image, "user") as string}
                   alt={formatUserDisplayName(authUser)}
                   className="h-8 w-8 object-cover"
                 />

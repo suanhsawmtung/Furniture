@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { baseImageUrl } from "@/config/env";
+import { formatImagePath } from "@/lib/utils";
 import { useProfileInfoUpdate } from "@/services/setting/queries/useProfileInfoUpdate";
 import type { UpdateProfileFormValues } from "@/types/setting.type";
 import type { UserType } from "@/types/user.type";
@@ -58,7 +58,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
       return URL.createObjectURL(imageFile);
     }
     if (user.image) {
-      return baseImageUrl + "user/" + user.image;
+      return formatImagePath(user.image, "user");
     }
     return null;
   }, [imageFile, user.image]);

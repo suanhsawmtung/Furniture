@@ -1,8 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { baseImageUrl } from "@/config/env";
 import {
   formatDateTime,
+  formatImagePath,
   formatPrice,
   getOrderStatusVariant,
   getPaymentStatusVariant
@@ -40,7 +40,7 @@ const OrderDetailCard = ({ order }: OrderDetailCardProps) => {
         <div className="w-full lg:w-1/2">
           {order.image ? (
             <img
-              src={baseImageUrl + "order/" + order.image}
+              src={formatImagePath(order.image, "order")}
               alt={order.code}
               className="h-auto w-full rounded-lg object-cover"
               loading="lazy"

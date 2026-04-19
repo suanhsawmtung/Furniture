@@ -1,4 +1,4 @@
-import { currency } from "@/config/env";
+import { baseImageUrl, currency } from "@/config/env";
 import type { OrderPaymentStatus, OrderSource, OrderStatus } from "@/types/order.type";
 import type { PaymentStatus } from "@/types/payment.type";
 import type { PostStatus } from "@/types/post.type";
@@ -15,6 +15,15 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const formatImagePath = (imagePath: string, folder: string) => {
+  try {
+    new URL(imagePath);
+    return imagePath;
+  } catch {
+    return `${baseImageUrl}${folder}/${imagePath}`;
+  }
+};
 
 export function formatPrice(
   price: number | string,
